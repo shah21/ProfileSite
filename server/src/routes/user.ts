@@ -16,7 +16,7 @@ router.patch('/update',[
         return true;
     }),
     body('age').custom((value, { req }) => {
-        if (value && typeof(value) !== 'number' ) {
+        if (value && Number.isNaN(value) ) {
             return Promise.reject('Age must be a number');
         }
         return true;

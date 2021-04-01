@@ -75,7 +75,7 @@ export const updateProfile = async (req:Request,res:Response,next:NextFunction)=
         }
 
        
-
+        console.log(values);
 
         const updatedValue = await (await User.updateById(userId,values)).value ;
         res.status(200).json({messge:'updated successfully!',user:updatedValue});

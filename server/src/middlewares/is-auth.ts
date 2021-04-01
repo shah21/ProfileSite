@@ -1,6 +1,6 @@
 import { Request,Response,NextFunction } from "express";
 import HttpException from '../utils/HttpException';
-import { verifyAccessToken } from "../helpers/jwt_helper";
+import { verifyAccessToken } from '../helpers/jwt_helper';
 
 
 interface MyToken {

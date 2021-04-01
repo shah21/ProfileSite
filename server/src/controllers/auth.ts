@@ -16,7 +16,7 @@ export const postLogin = async (req:Request,res:Response,next:NextFunction)=>{
     try{
         const user = await User.findByEmail(email);
         if (!user) {
-          const error = new HttpException("User not found");
+          const error = new HttpException("Incorrect Email");
           error.statusCode = 404;
           error.data =  errors;
           throw error;
@@ -34,7 +34,7 @@ export const postLogin = async (req:Request,res:Response,next:NextFunction)=>{
         const accessToken = await generateAccessToken(payload);
 
 
-        res.status(200).json({message:'login successfull.',user:{accessToken:accessToken,userId:user._id}});
+        res.status(200).json({message:'login successfull.',data:{accessToken:accessToken,userId:user._id}});
     }catch(err){
         if(!err.statusCode){
             err.statusCode = 500;
