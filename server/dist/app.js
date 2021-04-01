@@ -31,8 +31,9 @@ app.use(function (error, req, res, next) {
     res.status(status).json({ message: message, errors: data });
 });
 database_1.connectDb(function () {
+    /* Start server after DB connection established */
     console.log('Database connection successfull!');
-    app.listen(3030, function () {
+    app.listen(process.env.PORT || 3030, function () {
         console.log('listening...');
     });
 });

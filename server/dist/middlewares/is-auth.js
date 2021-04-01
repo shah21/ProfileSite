@@ -1,4 +1,5 @@
 "use strict";
+/* Custom moddleware for check user authorization */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -58,6 +59,7 @@ exports.default = (function (req, res, next) { return __awaiter(void 0, void 0, 
                 return [4 /*yield*/, jwt_helper_1.verifyAccessToken(token)];
             case 1:
                 decodedToken = (_a.sent());
+                /* Set userId to req object of current request */
                 req.userId = decodedToken.userId;
                 next();
                 return [3 /*break*/, 3];

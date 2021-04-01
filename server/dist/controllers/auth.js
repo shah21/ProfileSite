@@ -1,4 +1,5 @@
 "use strict";
+/* Controllers/Middleware functions of auth apis */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -45,6 +46,7 @@ var bcryptjs_1 = __importDefault(require("bcryptjs"));
 var HttpException_1 = __importDefault(require("../utils/HttpException"));
 var jwt_helper_1 = require("../helpers/jwt_helper");
 var user_1 = __importDefault(require("../models/user"));
+/* Login user */
 var postLogin = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var email, password, errors, user, error, isPasswordsEqual, error, payload, accessToken, err_1;
     return __generator(this, function (_a) {
@@ -82,9 +84,11 @@ var postLogin = function (req, res, next) { return __awaiter(void 0, void 0, voi
                 return [3 /*break*/, 6];
             case 5:
                 err_1 = _a.sent();
+                /* If no error code avaiable then assign 500 */
                 if (!err_1.statusCode) {
                     err_1.statusCode = 500;
                 }
+                //Pass to custom error handler
                 next(err_1);
                 return [3 /*break*/, 6];
             case 6: return [2 /*return*/];
@@ -92,6 +96,7 @@ var postLogin = function (req, res, next) { return __awaiter(void 0, void 0, voi
     });
 }); };
 exports.postLogin = postLogin;
+/* Register user */
 var postSignup = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var email, password, name, errors, error, hashedPass, newUser, err_2;
     return __generator(this, function (_a) {
@@ -104,6 +109,7 @@ var postSignup = function (req, res, next) { return __awaiter(void 0, void 0, vo
                 _a.label = 1;
             case 1:
                 _a.trys.push([1, 4, , 5]);
+                /* Erros from express-validator */
                 if (errors.length > 0) {
                     error = new HttpException_1.default("Invalid data");
                     error.message = errors[0].msg;
@@ -115,8 +121,10 @@ var postSignup = function (req, res, next) { return __awaiter(void 0, void 0, vo
             case 2:
                 hashedPass = _a.sent();
                 newUser = new user_1.default(email, hashedPass, Date.now(), name);
+                /* Save user to db */
                 return [4 /*yield*/, newUser.save()];
             case 3:
+                /* Save user to db */
                 _a.sent();
                 res.status(201).json({ messge: 'user created successfully' });
                 return [3 /*break*/, 5];

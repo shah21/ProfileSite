@@ -1,4 +1,5 @@
 "use strict";
+/* Schema or model of User data */
 Object.defineProperty(exports, "__esModule", { value: true });
 var database_1 = require("../helpers/database");
 var mongodb_1 = require("mongodb");

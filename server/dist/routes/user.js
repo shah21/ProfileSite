@@ -1,4 +1,5 @@
 "use strict";
+/* Routes file of user endpoints */
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -19,6 +20,7 @@ router.patch('/update', [
     }),
     express_validator_1.body('age').custom(function (value, _a) {
         var req = _a.req;
+        /* Check age is a number or not */
         if (value && Number.isNaN(value)) {
             return Promise.reject('Age must be a number');
         }
@@ -26,6 +28,7 @@ router.patch('/update', [
     }),
     express_validator_1.body('gender').custom(function (value, _a) {
         var req = _a.req;
+        /* Check gender is from specified values or not */
         var genderArray = ['male', 'female', 'other'];
         if (value && !genderArray.includes(value.toLowerCase())) {
             return Promise.reject('Not a valid gender');

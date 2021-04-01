@@ -1,4 +1,5 @@
 "use strict";
+/* Routes file of auth endpoints */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -45,6 +46,7 @@ var auth_1 = require("../controllers/auth");
 var user_1 = __importDefault(require("../models/user"));
 var router = express_1.Router();
 router.post('/login', [
+    /* Check if email is valid or not */
     express_validator_1.body('email').isEmail().withMessage('Invalid Email').normalizeEmail(),
 ], auth_1.postLogin);
 router.post('/signup', [
@@ -68,11 +70,13 @@ router.post('/signup', [
     express_validator_1.body('password').not().isEmpty().withMessage('Password is empty').isLength({ min: 6 }).withMessage('Password must have atleast 6 character long'),
     express_validator_1.body('confirm_password').custom(function (value, _a) {
         var req = _a.req;
+        /* Check password and confirm passwords are same or not */
         if (value !== req.body.password) {
             return Promise.reject('Passwords must be same');
         }
         return true;
     }),
+    /* Check name has alleast 3 charater long or not */
     express_validator_1.body('name').not().isEmpty().withMessage('Must have a name').isLength({ min: 3 }).withMessage('Name must have atleast 3 character long')
 ], auth_1.postSignup);
 exports.default = router;

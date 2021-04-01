@@ -1,4 +1,5 @@
 "use strict";
+/* Controllers/Middleware functions of user apis */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -43,6 +44,7 @@ exports.updateProfile = exports.getUser = void 0;
 var express_validator_1 = require("express-validator");
 var HttpException_1 = __importDefault(require("../utils/HttpException"));
 var user_1 = __importDefault(require("../models/user"));
+/* Get user from db */
 var getUser = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var userId, user, error, userObj, err_1;
     return __generator(this, function (_a) {
@@ -73,8 +75,10 @@ var getUser = function (req, res, next) { return __awaiter(void 0, void 0, void 
             case 3:
                 err_1 = _a.sent();
                 if (!err_1.statusCode) {
+                    /* If no error code avaiable then assign 500 */
                     err_1.statusCode = 500;
                 }
+                //Pass to custom error handler
                 next(err_1);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
@@ -111,6 +115,7 @@ var updateProfile = function (req, res, next) { return __awaiter(void 0, void 0,
                     throw error;
                 }
                 values = {};
+                /* Create values obj with changed values  */
                 if (typeof (name) !== 'undefined') {
                     values.name = name;
                 }
@@ -120,7 +125,6 @@ var updateProfile = function (req, res, next) { return __awaiter(void 0, void 0,
                 if (typeof (gender) !== 'undefined' && gender.length > 0) {
                     values.gender = gender;
                 }
-                console.log(values);
                 return [4 /*yield*/, user_1.default.updateById(userId, values)];
             case 3: return [4 /*yield*/, (_a.sent()).value];
             case 4:
@@ -133,6 +137,7 @@ var updateProfile = function (req, res, next) { return __awaiter(void 0, void 0,
                 if (!err_2.statusCode) {
                     err_2.statusCode = 500;
                 }
+                //Pass to custom error handler
                 next(err_2);
                 return [3 /*break*/, 6];
             case 6: return [2 /*return*/];
