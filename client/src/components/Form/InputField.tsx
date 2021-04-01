@@ -1,3 +1,5 @@
+/* Custom Input Field component */
+
 import { makeStyles, TextField } from '@material-ui/core';
 import React from 'react'
 
@@ -39,7 +41,7 @@ const useStyle = makeStyles({
     },
 
     inputField:{
-        width:'50%',
+        width:'100%',
     },
     errorText:{
         color:'red',

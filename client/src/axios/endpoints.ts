@@ -1,3 +1,4 @@
+/* Api endpoints */
 
 enum endpoints {
     login = '/auth/login',

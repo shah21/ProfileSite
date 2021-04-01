@@ -1,3 +1,5 @@
+/* Controllers/Middleware functions of user apis */
+
 import {Request,Response,NextFunction} from "express";
 import { validationResult } from "express-validator";
 import HttpException from "../utils/HttpException";
@@ -5,9 +7,11 @@ import HttpException from "../utils/HttpException";
 import User from "../models/user";
 
 
+/* Get user from db */
 export const getUser = async (req:Request,res:Response,next:NextFunction)=>{
     const userId:string = req.userId!;
     try{
+        /* Check valid userId or not */
         const user = await User.findById(userId);
         if (!user) {
           const error = new HttpException("User not found");
@@ -27,8 +31,10 @@ export const getUser = async (req:Request,res:Response,next:NextFunction)=>{
         res.status(200).json({messge:'success',user:userObj});
     }catch(err){
         if(!err.statusCode){
+             /* If no error code avaiable then assign 500 */
             err.statusCode = 500;
         }
+        //Pass to custom error handler
         next(err);
     }
 };
@@ -41,10 +47,11 @@ export const updateProfile = async (req:Request,res:Response,next:NextFunction)=
     const age:string = req.body.age;
     const gender:string = req.body.gender;
 
+    /* Get validation error from express validator */
     const errors = validationResult(req).array();
         
     try{
-    
+        
         if(errors.length > 0){
             const error = new HttpException("Invalid data");
             error.message = errors[0].msg;
@@ -63,7 +70,7 @@ export const updateProfile = async (req:Request,res:Response,next:NextFunction)=
 
         const values:{age?:number,name?:string,gender?:string}={};
 
-    
+        /* Create values obj with changed values  */
         if(typeof(name) !== 'undefined'){
             values.name = name;
         }
@@ -74,9 +81,6 @@ export const updateProfile = async (req:Request,res:Response,next:NextFunction)=
             values.gender = gender;
         }
 
-       
-        console.log(values);
-
         const updatedValue = await (await User.updateById(userId,values)).value ;
         res.status(200).json({messge:'updated successfully!',user:updatedValue});
     }catch(err){
@@ -84,6 +88,7 @@ export const updateProfile = async (req:Request,res:Response,next:NextFunction)=
         if(!err.statusCode){
             err.statusCode = 500;
         }
+        //Pass to custom error handler
         next(err);
     }
 };

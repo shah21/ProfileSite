@@ -1,11 +1,17 @@
+/* Axios configuration */
 import axios from "axios";
 
 
-const host = 'localhost:3030';
-const BASE_URL = `http://${host}`;
 
+const host =  process.env.HOST || 'https://challenge01.herokuapp.com';
+const BASE_URL = host;
+
+/* instance for normal json request */
 const axiosInstance =  axios.create({
     baseURL:BASE_URL,
+    headers: {
+        "Content-Type": "application/json"
+    },
 });
 
 

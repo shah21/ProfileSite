@@ -1,3 +1,5 @@
+/* Styles for Login,Signup Components/Pages */
+
 import { makeStyles } from "@material-ui/core";
 
 
@@ -6,8 +8,7 @@ import { makeStyles } from "@material-ui/core";
 
 export const useStyle = makeStyles({
     loginPage:{
-        width:'50%',
-        margin:'100px auto',
+        marginTop:100,
     },
     form:{
         marginTop:30,
@@ -16,16 +17,19 @@ export const useStyle = makeStyles({
     },
     buttonLogin:{
         marginTop:'50px',
-        width:'50%',
+        width:'100%',
     },
     buttonSignup:{
         marginTop:'20px',
-        width:'50%',
+        width:'100%',
     },
     errorText:{
         color:'red',
         fontSize:16,
         fontWeight:'bold',
     },
-    
+    progress:{
+        color:'#fff',
+        padding:3,
+    }
 });

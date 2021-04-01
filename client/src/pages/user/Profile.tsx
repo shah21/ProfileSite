@@ -1,4 +1,4 @@
-import { Typography,Card, Button } from '@material-ui/core';
+import { Typography,Card, Button, Container, CircularProgress } from '@material-ui/core';
 import Cookies from 'js-cookie';
 import React from 'react'
 
@@ -6,45 +6,41 @@ import React from 'react'
 import axios from "../../axios/config";
 import endpoints from '../../axios/endpoints';
 import EditableTextView from '../../components/EditableViews/EditableTextView';
-
 import { FlashContext, TokenContext } from '../../contexts/context';
 import User from '../../models/user';
 import { useStyle } from "./styles";
 
 
-const updateUser = async (credentails:object,token:string) =>{
-
+/* Update user api call */
+const updateUser = async (credentails: object,token:string) => {
     try {
-      const response = await axios.patch(endpoints.updateUser, JSON.stringify(credentails), {
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer " + token,
-        },
-      });
-      return response.data;
+        const response = await axios.patch(endpoints.updateUser, JSON.stringify(credentails),{
+            headers:{
+                "Authorization":`Bearer ${token}`
+            }
+        });
+        return response.data;
     } catch (err) {
-      throw err
+        throw err
     }
 }
 
-
-const getUser = async (token:string) =>{
-    if (token) {
-        try {
-            const response = await axios.get(endpoints.getUser, {
-                headers: {
-                    "Content-Type": 'application/json',
-                    "Authorization": "Bearer " + token,
-                }
-            });
-            return response.data;
-        } catch (err) {
-            console.log(err);
-            return err;
-        }
-    } 
+/* Get user api call */
+const getUser = async (token:string) => {
+    try {
+        const response = await axios.get(endpoints.getUser,{
+            headers:{
+                "Authorization":`Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (err) {
+        console.log(err);
+        return err;
+    }
 }
 
+/* For clear all cookies */
 const removeCookies = () =>{
     return new Promise((resolve,reject)=>{
         Object.keys(Cookies.get()).forEach(function (cookie) {
@@ -68,22 +64,27 @@ function Profile() {
         gender:null! as string, 
       });  
     const [userData,setUserData] =  React.useState<User>(null!)
+    const [isLoading, setLoading] = React.useState<boolean>(false);
     
 
     /* contexts */
     const {token,setToken} = React.useContext(TokenContext);
     const {setFlash} = React.useContext(FlashContext);
 
-
+      
     React.useEffect(() => {
+        /* Prepare user data */
         async function setUserProfile() {
+            setLoading(true)
             try {
                 const response = await getUser(token);
+                setLoading(false)
                 if (response && response.user) {
                     const user = response.user;
                     setUserData(user);
                 }
             } catch (err) {
+                setLoading(false)
                 console.log(err)
             }
         }
@@ -91,7 +92,7 @@ function Profile() {
     }, [token]);
 
     
-    /* Handle validation of form */
+    /* Validate fields */
     const handleValidation = (val:string,field:string) => {
         let formIsValid = true;
         let newErrors:any = {};
@@ -101,6 +102,11 @@ function Profile() {
                 newErrors[field] = 'Name must have atleast 3 characters long';
                 formIsValid = false;
             }
+
+            if(field === 'gender' && val === 'Select'){
+                formIsValid = false;
+            }
+
         }else{
             newErrors[field] = 'Cannot be empty';
             formIsValid = false;
@@ -116,7 +122,7 @@ function Profile() {
         return formIsValid;
     }
 
-     /* Handle login */
+     /* Handle save updates */
     const handleSave = async (value:string,field:string,updated:()=>void) =>{
 
         if (handleValidation(value, field)) {
@@ -137,15 +143,14 @@ function Profile() {
                         ...userData,
                         [field]:value
                     });
+                    /* callback to notify updation success */
                     updated();
                 }
 
             } catch (err) {
-
                 if (err.response) {
                     const errResponseData = err.response.data;
                     setFlash({ message: errResponseData.message, type: 'error' })
-                    return;
                 } else {
                     setFlash({ message: err.message, type: 'error' })
                 }
@@ -154,6 +159,7 @@ function Profile() {
         }
     }
 
+    /* Handle logout functionality */
     const handleLogout = () => {
         removeCookies().then(result=>{
             if(result){
@@ -164,12 +170,16 @@ function Profile() {
     }
     
     
-
+    /* Styles */
     const classes = useStyle();
+
+
     return (
         <div className={classes.homePage}>
-            <Typography variant="h4" >Profile</Typography>
+            <Container maxWidth="sm">
+            <Typography variant="h4" >Profile {isLoading && <CircularProgress className={classes.progress} color="primary" size={30} />}</Typography>
 
+            {/* Check user data available or not */}
             {userData && (
             <Card className={classes.container}>
 
@@ -189,7 +199,7 @@ function Profile() {
                     error={errors.age}
                     type="number"
                     name="age"
-                    value={userData.age.toString()}
+                    value={userData.age}
                     handleSave={handleSave} />
 
                 <EditableTextView
@@ -212,6 +222,8 @@ function Profile() {
                 variant="outlined">
                     Logout
                 </Button>
+
+                </Container>    
         </div>
     )
 }

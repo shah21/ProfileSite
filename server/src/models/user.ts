@@ -1,3 +1,5 @@
+/* Schema or model of User data */
+
 import { getDb } from "../helpers/database";
 import {ObjectId } from'mongodb';
 

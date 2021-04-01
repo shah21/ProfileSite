@@ -14,16 +14,17 @@ import Profile from "./pages/user/Profile";
 
 function App() {
 
+  /* States */
   const {token,setToken} = useToken();
   const [flash, setFlash] = React.useState<FlashType>(null!); 
   const [open, setOpen] = React.useState<boolean>(false); 
 
+  /* Check Flash Messages */
   React.useEffect(()=>{
     if(flash){
       setOpen(true);
     }
   },[flash])
-
   const handleClose = () => {
       setOpen(false);
   }

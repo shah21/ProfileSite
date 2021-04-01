@@ -1,3 +1,5 @@
+/* Routes file of user endpoints */
+
 import { Router } from 'express';
 import { body } from 'express-validator';
 
@@ -16,12 +18,14 @@ router.patch('/update',[
         return true;
     }),
     body('age').custom((value, { req }) => {
+        /* Check age is a number or not */
         if (value && Number.isNaN(value) ) {
             return Promise.reject('Age must be a number');
         }
         return true;
     }),
     body('gender').custom((value, { req }) => {
+        /* Check gender is from specified values or not */
         const genderArray = ['male','female','other'];
         if (value &&  !genderArray.includes((value as string).toLowerCase())) {
             return Promise.reject('Not a valid gender');

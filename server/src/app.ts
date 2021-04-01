@@ -2,7 +2,6 @@ import express,{Request,Response,NextFunction} from "express";
 import cors from "cors";
 import 'dotenv/config'
 
-
 import authRouter from "./routes/auth";
 import userRouter from "./routes/user";
 import {connectDb} from "./helpers/database"
@@ -38,8 +37,9 @@ app.use((error:HttpException,req:Request,res:Response,next:NextFunction)=>{
 
 
 connectDb(()=>{
+    /* Start server after DB connection established */
     console.log('Database connection successfull!');
-    app.listen(3030,()=>{
+    app.listen(process.env.PORT || 3030,()=>{
         console.log('listening...')
     });
 })

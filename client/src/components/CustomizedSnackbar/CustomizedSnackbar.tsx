@@ -1,3 +1,5 @@
+/* Customized snackbar component for showing flash/popup msg */
+
 import React,{} from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
@@ -16,6 +18,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
+/* Component props types */
 interface types { openState: boolean, handleClose: any, mode: any, message: string }
 
 export default function CustomizedSnackbars({openState,handleClose,mode,message}:types) {

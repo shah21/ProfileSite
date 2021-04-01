@@ -1,3 +1,5 @@
+/* Util class for custom error */
+
 class HttpException extends Error {
     statusCode: number = 500;
     message: string;

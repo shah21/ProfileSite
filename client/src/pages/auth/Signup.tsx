@@ -1,4 +1,4 @@
-import { Typography, Button } from '@material-ui/core';
+import { Typography, Button, Container, CircularProgress } from '@material-ui/core';
 import React from 'react'
 import { Redirect, useHistory } from 'react-router-dom';
 
@@ -8,15 +8,11 @@ import InputField from '../../components/Form/InputField';
 import { FlashContext, TokenContext } from '../../contexts/context';
 import { useStyle } from "./styles";
 
-/* Signup request func */
+/* Signup api call */
 const signupUser = async (credentails:object) =>{
 
     try {
-      const response = await axios.post(endpoints.signup, JSON.stringify(credentails), {
-        headers: {
-          "Content-Type": "application/json"
-        },
-      });
+      const response = await axios.post(endpoints.signup, JSON.stringify(credentails));
       return response.data;
     } catch (err) {
       throw err
@@ -32,20 +28,24 @@ const formReducer = (state:object, event: any) => {
 
 function Signup() {
 
+    /* Reducer */
     const [formData, setFormData] = React.useReducer(formReducer, {});
+    
+    /* state */
     const [errors, setErrors] = React.useState({
         email:null! as string,
         password:null! as string ,
         confirm_password:null! as string,
         name:null! as string
-      });  
-    
+      });    
+    const [isLoading,setLoading] = React.useState<boolean>(false);  
+
+    /* contexts */
     const {token} = React.useContext(TokenContext);
-    
     const history = useHistory();  
     const {setFlash} = React.useContext(FlashContext);
 
-    /* Handle user input */
+    /* Handle text change */
     const handleChange = (e:InputType) =>{
         setErrors({
             ...errors,
@@ -57,7 +57,7 @@ function Signup() {
     }  
 
     
-    /* Handle validation of form */
+    /* Validate fields */
     const handleValidation = () => {
         let formIsValid = true;
         const newErrors = {
@@ -67,6 +67,7 @@ function Signup() {
             name:''
         };
 
+        /* Name */
         if (!formData.name) {
             formIsValid = false;
             newErrors["name"] = "Cannot be empty";
@@ -75,6 +76,7 @@ function Signup() {
             newErrors["name"] = "Name must have atleast 3 characters long";
         }
 
+        /* Email */
         if (!formData.email) {
             formIsValid = false;
             newErrors['email'] = "Cannot be empty";
@@ -90,7 +92,7 @@ function Signup() {
             }
         }
 
-
+        /* Password */
         if (!formData.password) {
             formIsValid = false;
             newErrors["password"] = "Cannot be empty";
@@ -99,6 +101,7 @@ function Signup() {
             newErrors["password"] = "Password must have atleast 6 characters long";
         }
 
+        /* Confirm Password */
         if (!formData.confirm_password) {
             formIsValid = false;
             newErrors['confirm_password'] = "Cannot be empty";
@@ -120,9 +123,11 @@ function Signup() {
         return formIsValid;
     }
 
-     /* Handle signup */
+     /* Handle Registering user */
      const handleSignup = async () =>{
+
         if(handleValidation()){
+          setLoading(true);
           setErrors({  
             email:'',
             password:'',
@@ -133,21 +138,20 @@ function Signup() {
 
           try{
             const responseData:any = await signupUser(formData);
+            setLoading(false);
             if(responseData){
               setFlash({message:'Account created successfully!.',type:'success'})
               history.push('/login');
             }
-            
           }catch(err){
-            
             if (err.response) {
               const errResponseData = err.response.data;
               console.log(errResponseData);
               setFlash({ message: errResponseData.message, type: 'error' })
-              return;
             }else{
               setFlash({ message: err.message, type: 'error' })
             }
+            setLoading(false);
             return;
           }
           
@@ -155,6 +159,7 @@ function Signup() {
     }
     
 
+      /* Styles */
     const classes = useStyle();
 
     if(token){
@@ -165,29 +170,34 @@ function Signup() {
       }
 
     return (
+      
         <div className={classes.loginPage}>
-            <Typography  variant="h4">Signup</Typography>
-           
-            <div className={classes.form}>
-                
 
-                <InputField handleChange={handleChange} name="name" label="Name" type="text" error={errors.name}  />
-                <InputField handleChange={handleChange} name="email" label="Email" type="text" error={errors.email}  />
-                <InputField handleChange={handleChange} name="password" label="Password" type="password" error={errors.password}  />
-                <InputField handleChange={handleChange} name="confirm_password" label="Confirm Password" type="password" error={errors.confirm_password}  />
-                
-                <Button variant="contained" size="medium"  onClick={handleSignup} className={classes.buttonLogin} color="primary">
-                    Register
+        <Container maxWidth="xs">
+          <Typography variant="h4">Signup</Typography>
+
+          <div className={classes.form}>
+
+
+            <InputField handleChange={handleChange} name="name" label="Name" type="text" error={errors.name} />
+            <InputField handleChange={handleChange} name="email" label="Email" type="text" error={errors.email} />
+            <InputField handleChange={handleChange} name="password" label="Password" type="password" error={errors.password} />
+            <InputField handleChange={handleChange} name="confirm_password" label="Confirm Password" type="password" error={errors.confirm_password} />
+
+            <Button variant="contained" size="medium" onClick={handleSignup} className={classes.buttonLogin} color="primary">
+              Register
+              {isLoading && <CircularProgress className={classes.progress}  color="secondary" size={20}/>}
                 </Button>
-    
-                <Button 
-                    variant="outlined"
-                    size="medium" 
-                    onClick={()=>{history.push('/login')}}
-                    className={classes.buttonSignup} >
-                    Login
+
+            <Button
+              variant="outlined"
+              size="medium"
+              onClick={() => { history.push('/login') }}
+              className={classes.buttonSignup} >
+              Login
                 </Button>
-            </div>
+          </div>
+        </Container>
         </div>
     )
 }

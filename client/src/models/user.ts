@@ -1,3 +1,4 @@
+/* User Schema / Model */
 
 export default class User{
     email:string;

@@ -1,3 +1,5 @@
+/* Styles for Profile Component/Page */
+
 import { makeStyles } from "@material-ui/core";
 
 
@@ -6,8 +8,7 @@ import { makeStyles } from "@material-ui/core";
 
 export const useStyle = makeStyles({
     homePage:{
-        width:'50%',
-        margin:'100px auto',
+        marginTop:100,
     },
     container:{
         marginTop:30,
@@ -20,5 +21,8 @@ export const useStyle = makeStyles({
     },
     label:{
         fontWeight:'bold',
+    },
+    progress:{
+        padding:3,
     }
 });

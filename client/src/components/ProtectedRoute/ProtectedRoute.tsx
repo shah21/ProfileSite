@@ -1,3 +1,8 @@
+/*
+Component to check authentication
+.then render Components according to the result
+*/
+
 import React from "react";
 import { Route, Redirect, RouteProps} from "react-router-dom";
 
@@ -12,14 +17,14 @@ export interface ProtectedRouteProps extends RouteProps {
 
     let redirectPath = '';
 
-    
+
     if (!props.token) {
       redirectPath = props.authenticationPath;
     }
   
     if (redirectPath) {
       const renderComponent = () => <Redirect to={{ pathname: redirectPath }} />;
-      return <Route {...props} component={renderComponent} render={undefined} />;
+      return <Route {...props} component={renderComponent}/>;
     } else {
       return <Route {...props} />;
     }
