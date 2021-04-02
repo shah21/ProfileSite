@@ -10,7 +10,7 @@ var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var generateAccessToken = function (payload) {
     return new Promise(function (resolve, reject) {
         /* Sign new token */
-        jsonwebtoken_1.default.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '1hr' }, function (err, token) {
+        jsonwebtoken_1.default.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: '24hr' }, function (err, token) {
             if (err) {
                 reject(err.message);
             }

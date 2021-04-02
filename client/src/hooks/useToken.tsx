@@ -26,7 +26,7 @@ export function useToken():FuncType{
 
         if(accessToken){
             Cookie.set('accessToken',accessToken,{
-                expires: new Date(new Date().getTime() + 1 * 3600 * 1000)
+                expires: new Date(new Date().getTime() + (1*24*60*60*1000))
             });
 
             setToken(accessToken);
@@ -40,3 +40,4 @@ export function useToken():FuncType{
     }
 
 }
+
