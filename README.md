@@ -1,4 +1,4 @@
-# Profile App
+# Profile Site
 
 ![react][react-url]
 ![typescript][types-url]
