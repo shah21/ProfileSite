@@ -5,15 +5,13 @@
 ![node][npm-image]
 ![mongodb][mongo-url]
 
- <p align="center">
-  An awesome  Mini drop box with minimalistic features
-  <br />
+<p>
   <a href="https://profilesite01.herokuapp.com/">View Demo</a>
   ·
   <a href="https://github.com/shah21/ProfileSite/issues">Report Bug</a>
   ·
   <a href="https://github.com/shah21/ProfileSite/issues">Request Feature</a>
- </p>
+</p>
 
 This project is a simple mern stack application that helps to maintain our profile . So you can create an account and edit your profile thats all 😄. This project can use to reference for creating a simple mern application with following features ⬇️
 
